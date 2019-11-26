@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+// Module dependencies
+const http = require('http');
+const main = require('../main');
+const MongoClient = require('mongodb').MongoClient;
+
+// Env
+require('dotenv').config();
+
+// Set port
+const port = process.env.PORT || 3000;
+
+// Create server
+const server = http.createServer(main);
+
+// Create Mongodb Connection and listen server
+MongoClient.connect(process.env.DATABASE, { useUnifiedTopology: true, useNewUrlParser: true }, (err, client) => {
+  if (err) return console.log(err);
+  db = client.db(process.env.DATABASE_NAME);
+
+  server.listen(port, () => console.log(`Server running on port ${port} - mode: ${process.env.NODE_ENV}`));
+});
